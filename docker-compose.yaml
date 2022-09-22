@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+
+  db:
+    container_name: hello_db
+    image: postgres
+    hostname: db
+    volumes:
+      - ../volume/db:/var/lib/postgresql
+    environment:
+      - POSTGRES_DB=my_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234
+    ports:
+      - 5432:5432
+    networks: 
+      - back
+  hello_py:
+    build: .
+    ports:
+      - 1234:1234
+    networks: 
+      - back 
+    container_name: 
+      hello_py 
+    depends_on: 
+      - db
+networks:
+  back:
+    driver: bridge
+    internal: true
+    ipam:
+     driver: default
+     config:
+       - subnet: 172.20.0.0/24
+  default:
+    driver: bridge
