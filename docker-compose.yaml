@@ -13,26 +13,33 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=1234
     ports:
-      - 5432:5432
+      - "54321:5432"
     networks: 
-      - back
+      - default
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4:6.14
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "mikimiki55550@gmail.com"
+      PGADMIN_DEFAULT_PASSWORD: "1234"
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    volumes:
+      - ../volume/pg:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    restart: unless-stopped
+    networks:
+      - default
   hello_py:
     build: .
     ports:
       - 1234:1234
     networks: 
-      - back 
+      - default
     container_name: 
       hello_py 
     depends_on: 
       - db
 networks:
-  back:
-    driver: bridge
-    internal: true
-    ipam:
-     driver: default
-     config:
-       - subnet: 172.20.0.0/24
   default:
     driver: bridge
