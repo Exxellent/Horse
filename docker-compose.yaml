@@ -7,7 +7,7 @@ services:
     image: postgres
     hostname: db
     volumes:
-      - ../volume/db:/var/lib/postgresql
+      - ../volume/db/data:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=my_db
       - POSTGRES_USER=postgres
@@ -33,7 +33,7 @@ services:
   hello_py:
     build: .
     ports:
-      - 1234:1234
+      - 5000:5000
     networks: 
       - default
     container_name: 
