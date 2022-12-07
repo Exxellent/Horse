@@ -29,9 +29,6 @@ app.register_blueprint(auth_bp)
     
 @app.route("/")
 def index():
-<<<<<<< HEAD
-    return render_template("index.html")
-=======
     return render_template("index.html")
 
 @app.route("/jockey_stat")
@@ -47,4 +44,3 @@ def add_race():
     return render_template("add_race.html")
 
    
->>>>>>> 5e96977e6f1b19c9a1eef6e4fb02bffa83607754
