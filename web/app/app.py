@@ -30,3 +30,17 @@ app.register_blueprint(auth_bp)
 @app.route("/")
 def index():
     return render_template("index.html")
+
+@app.route("/jockey_stat")
+def jockey():
+    return render_template("jockey_stat.html")
+
+@app.route("/horse_stat")
+def horse():
+    return render_template("horse_stat.html")
+
+@app.route("/add_race")
+def add_race():
+    return render_template("add_race.html")
+
+   
