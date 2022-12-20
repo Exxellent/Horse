@@ -5,29 +5,21 @@
         <thead>
         <tr>
             <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
+            <th scope="col">Имя</th>
+            <th scope="col">Кол-во подеб</th>
+
         </tr>
         </thead>
         <tbody>
+        {%for horse in horses%}
         <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
+            <th scope="row">{{loop.index}}</th>
+            <td>{{horse.name}}</td>
+            <td>{{horse.count_win}}</td>
+
+
         </tr>
-        <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-        </tr>
-        <tr>
-            <th scope="row">3</th>
-            <td colspan="2">Larry the Bird</td>
-            <td>@twitter</td>
-        </tr>
+        {%endfor%}
         </tbody>
     </table>
 {% endblock  %}

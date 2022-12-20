@@ -22,17 +22,16 @@ def load_user(user_id):
     user = User.query.get(user_id)
     return user
 
-# def check_rights(action):
-#     def decorator(function):
-#         @functools.wraps(function)
-#         def wrapper(*args, **kwargs):
-#             id_book = kwargs.get('id_book')
-#             if not current_user.can(action, id_book=id_book):
-#                 flash('У вас недостаточно прав для доступа к данной странице.', 'danger')
-#                 return redirect(url_for('index'))
-#             return function(*args, **kwargs)
-#         return wrapper
-#     return decorator
+def check_rights():
+    def decorator(function):
+        @functools.wraps(function)
+        def wrapper(*args, **kwargs):
+            if not current_user.is_admin:
+                flash('У вас недостаточно прав для доступа к данной странице.', 'danger')
+                return redirect(url_for('index'))
+            return function(*args, **kwargs)
+        return wrapper
+    return decorator
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
