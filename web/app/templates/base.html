@@ -41,20 +41,26 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNavDropdown">
                     <ul class="navbar-nav ms-auto pe-10 ">
-                        <div class="dropdown-content">
-                            <div class="navbar-brand">
-                                <a href="{{url_for('jockey')}}">Статистика жокеев</a>
-                                
-                                <a href="{{url_for('add_race')}}">Добавление нового состязания, жокея, лошади ( для админов)</a>
-                                
-                                <a href="{{url_for('horse')}}">Статистика лошадей</a>
-                            </div>
-                        </div>
                         {% if current_user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.endpoint == 'jockey' %}active{% endif %}" href="{{url_for('jockey')}}">Статистика жокеев</a>
+                        </li>
+                        {% if current_user.role_id==2 %}
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.endpoint == 'add_race' %}active{% endif %}" href="{{url_for('add_race')}}">Добавление нового состязания, жокея, лошади</a>
+                        </li>
+                        {%endif%}
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.endpoint == 'horse' %}active{% endif %}" href="{{url_for('horse')}}">Статистика лошадей</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.endpoint == 'stat_race' %}active{% endif %}" href="{{url_for('stat_race')}}">Результаты забегов</a>
+                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 {{current_user.login}}
                             </a>
+                            
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
                             <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">Выйти</a></li>
                             </ul>

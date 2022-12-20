@@ -1,7 +1,7 @@
 from flask import Flask, render_template, flash
 from sqlalchemy import MetaData
 from flask_sqlalchemy import SQLAlchemy
-
+from flask_login import current_user, login_required
 
 
 
@@ -20,8 +20,8 @@ convention = {
 metadata = MetaData(naming_convention=convention)
 db = SQLAlchemy(app, metadata=metadata)
 
-
-from auth import bp as auth_bp, init_login_manager
+from models import Horse, Jockey, Stat_race
+from auth import bp as auth_bp, init_login_manager, check_rights
 
 
 init_login_manager(app)
@@ -33,13 +33,22 @@ def index():
 
 @app.route("/jockey_stat")
 def jockey():
-    return render_template("jockey_stat.html")
+    jockeys = Jockey.query.order_by(Jockey.number_of_races.desc())
+    return render_template("jockey_stat.html", jockeys=jockeys)
 
 @app.route("/horse_stat")
 def horse():
-    return render_template("horse_stat.html")
+    horses = Horse.query.order_by(Horse.count_win.desc())
+    return render_template("horse_stat.html", horses=horses)
+
+@app.route("/stat_race")
+def stat_race():
+    stat_race = Stat_race.query.all()
+    return render_template("stat_race.html", stat_race=stat_race)
 
 @app.route("/add_race")
+@login_required
+@check_rights()
 def add_race():
     return render_template("add_race.html")
 
