@@ -7,7 +7,7 @@ from flask_login import current_user, login_required
 
 app = Flask(__name__)
 application = app
-
+client = app.test_client()
 app.config.from_pyfile('config.py')
 convention = {
     "ix": 'ix_%(column_0_label)s',
