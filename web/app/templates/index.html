@@ -1,5 +1,39 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>{{db}}</h1>
+{%for race in races%}
+    <div class="p-2 mb-3 border border-dark">
+
+        <p class="bolder"><b>Дата забега {{race.date}}</b></p>
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <th scope="col">Лошади</th>
+            </tr>
+            </thead>
+            <tbody>
+                {%for horse in horses%}
+            <tr>
+                    {%if horse.id_race==race.id%}<td>{{horse.name_horse}}</td>{%endif%}
+            </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <th scope="col">Жокеи</th>
+            </tr>
+            </thead>
+            <tbody>
+                {%for jockey in jockeys%}
+            <tr>
+                    {%if jockey.id_race==race.id%}<td>{{jockey.name_jockey}}</td>{%endif%}
+            </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+        
+    </div>
+{%endfor%}
 {% endblock  %}

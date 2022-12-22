@@ -47,7 +47,25 @@ class Stat_race(db.Model):
     f_place = db.Column(db.String(20), nullable=True)
     s_place= db.Column(db.String(20), nullable=True)
     t_place = db.Column(db.String(20), nullable=True)
+
+class Upcoming_races(db.Model):
+    __tablename__ = 'upcoming_races'
     
+    id = db.Column(db.Integer, primary_key=True)    
+    date = db.Column(db.String(50), nullable=False, server_default=sa.sql.func.now())
+
+class Race_horse(db.Model):
+    __tablename__ = 'race_horse'
+    
+    id_race = db.Column(db.Integer, primary_key=True)    
+    name_horse = db.Column(db.String(50), nullable=False, primary_key=True)
+
+class Race_jockey(db.Model):
+    __tablename__ = 'race_jockey'
+    
+    id_race = db.Column(db.Integer, primary_key=True)    
+    name_jockey = db.Column(db.String(50), nullable=False, primary_key=True)
+
 
     
 

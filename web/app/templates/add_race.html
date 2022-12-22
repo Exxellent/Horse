@@ -2,43 +2,34 @@
 
 {% block content %}
     <form action="#" method="POST" class="form-control" enctype="multipart/form-data">
-        <div class="row mb-3">
-            <label for="book_title" class="col-sm-2 col-form-label">Название соревнования</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" name="book_name" id="book_name" value=""
-                    autocomplete="off">
+        <div class="row">
+            <div class="mb-3 col-auto">
+                <label for="horses">Лошади</label>
+                <div  class="col-sm-auto">
+                    <select class="form-select" id="horses" name="horses" multiple size="3" title="Жанр книги">
+                        {% for horse in horses %}
+                        <option value="{{ horse.id }}">{{ horse.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="mb-3 col-auto">
+                <label for="jockeys">Жокеи</label>
+                <div  class="col-sm-auto">
+                    <select class="form-select" id="jockeys" name="jockeys" multiple size="3" title="Жанр книги">
+                        {% for jockey in jockeys %}
+                        <option value="{{ jockey.id }}">{{ jockey.full_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="mb-3 col-3">
+                <label for="date">Дата проведения <p class="text-muted">(г-м-д)</p></label>
+                <div class="col-sm-10">
+                    <input id="date" name="date" type="text"  class="form-control"  autocomplete="off"> 
+                </div>
             </div>
         </div>
-        <div class="row mb-3">
-            <label for="" class="col-sm-2 col-form-label">Количество участников</label>
-            <div class="col-sm-10 " >
-                <input type="text"  class="form-control"  autocomplete="off"> 
-            </div>
-        </div>
-        <div class="row mb-3">
-            <label for="book_author" class="col-sm-2 col-form-label">Дата проведения</label>
-            <div class="col-sm-10">
-                <input type="text"  class="form-control"  autocomplete="off"> 
-            </div>
-        </div>
-        <div class="row mb-3">
-            <label for="publishing_house" class="col-sm-2 col-form-label">Лошади</label>
-            <div class="col-sm-10">
-                <textarea class="form-control" name="" id=""></textarea>
-            </div>
-        </div>
-        <div class="row mb-3">
-            <label for="book_year" class="col-sm-2 col-form-label">Жокеи</label>
-            <div class="col-sm-10">
-                <textarea class="form-control" name="" id=""></textarea>
-            </div>
-        </div>
-        <!-- <div class="mb-3">
-            <label for="book_img" class="form-label">Обложка книги</label>
-            <input class="form-control" type="file" id="book_img" name="book_img" accept=".jpg,.png">
-        </div> -->
-    
-
         <div class="mb-3 text-center">
             <input type="submit" class="btn btn-dark" value="Сохранить">
         </div>

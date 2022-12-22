@@ -1,13 +1,14 @@
-from flask import Flask, render_template, flash
+from flask import Flask, render_template, flash, request, redirect, url_for
 from sqlalchemy import MetaData
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import current_user, login_required
+from sqlalchemy.exc import SQLAlchemyError
 
 
 
 app = Flask(__name__)
 application = app
-
+client = app.test_client()
 app.config.from_pyfile('config.py')
 convention = {
     "ix": 'ix_%(column_0_label)s',
@@ -20,7 +21,7 @@ convention = {
 metadata = MetaData(naming_convention=convention)
 db = SQLAlchemy(app, metadata=metadata)
 
-from models import Horse, Jockey, Stat_race
+from models import Horse, Jockey, Stat_race, Upcoming_races, Race_horse, Race_jockey
 from auth import bp as auth_bp, init_login_manager, check_rights
 
 
@@ -29,7 +30,11 @@ app.register_blueprint(auth_bp)
     
 @app.route("/")
 def index():
-    return render_template("index.html")
+    jockeys = Race_jockey.query.all()
+    horses = Race_horse.query.all()
+    races = Upcoming_races.query.all()
+
+    return render_template("index.html", jockeys=jockeys, horses=horses, races=races)
 
 @app.route("/jockey_stat")
 def jockey():
@@ -46,10 +51,40 @@ def stat_race():
     stat_race = Stat_race.query.all()
     return render_template("stat_race.html", stat_race=stat_race)
 
-@app.route("/add_race")
+@app.route("/add_race", methods=['GET', 'POST'])
 @login_required
 @check_rights()
 def add_race():
-    return render_template("add_race.html")
+    horses = Horse.query.all()
+    jockeys = Jockey.query.all()
+    
+    if request.method == 'POST':
+        try:
+            horses = request.form.getlist('horses')
+            jockeys = request.form.getlist('jockeys')
+            date = request.form.get('date')
+            race = Upcoming_races()
+            race.date=date
+            db.session.add(race)
+            db.session.commit()
+            race = Upcoming_races.query.order_by(Upcoming_races.id.desc()).first()
+            for horse in horses:
+                i = Race_horse()
+                i.id_race=race.id
+                i.name_horse=Horse.query.filter(Horse.id == int(horse)).first().name
+                db.session.add(i)
+            for jockey in jockeys:
+                i = Race_jockey()
+                i.id_race=race.id
+                i.name_jockey=Jockey.query.filter(Jockey.id == int(jockey)).first().full_name
+                db.session.add(i)
+            db.session.commit()
+        except SQLAlchemyError as e:
+                db.session.rollback()
+                flash(f'При добавлении данных произошла ошибка. \n{e}', category='danger')
+        return redirect(url_for('index'))
+        
+        
+    return render_template("add_race.html", horses=horses, jockeys=jockeys)
 
    
