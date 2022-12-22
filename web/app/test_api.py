@@ -21,4 +21,8 @@ def test_invalid_auth():
           "password" : "user"}
     response = client.post('/auth/login', data=data)
     assert response.status_code == 200
+
+def test_logout():
+    response=client.get('/auth/logout')
+    assert response.status_code==302
     
