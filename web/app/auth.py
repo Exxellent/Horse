@@ -44,7 +44,7 @@ def login():
                 login_user(user)
                 flash('Вы успешно аутентифицированы.', 'success')
                 next = request.args.get('next')
-                return render_template('auth/login.html')
+                return redirect(next or url_for('index'))
         flash('Неправильный логин или пароль','danger')
     return render_template('auth/login.html')
 
