@@ -3,4 +3,3 @@ USER root
 COPY . .
 RUN apk update && pip install --upgrade pip && pip install bandit pylint 
 ENTRYPOINT ["python", "test.py"]
-
