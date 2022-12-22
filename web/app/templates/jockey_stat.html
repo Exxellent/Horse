@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Имя</th>
+            <th scope="col">Кол-во забегов</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        {%for jockey in jockeys%}
+        <tr>
+            <th scope="row">{{loop.index}}</th>
+            <td>{{jockey.full_name}}</td>
+            <td>{{jockey.number_of_races}}</td>
+
+
+        </tr>
+        {%endfor%}
+        </tbody>
+    </table>
+{% endblock  %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Имя</th>
+            <th scope="col">Кол-во подеб</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        {%for horse in horses%}
+        <tr>
+            <th scope="row">{{loop.index}}</th>
+            <td>{{horse.name}}</td>
+            <td>{{horse.count_win}}</td>
+
+
+        </tr>
+        {%endfor%}
+        </tbody>
+    </table>
+{% endblock  %}
