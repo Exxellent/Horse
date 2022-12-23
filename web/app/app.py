@@ -3,7 +3,7 @@ from sqlalchemy import MetaData
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import current_user, login_required
 from sqlalchemy.exc import SQLAlchemyError
-
+from flask_migrate import Migrate
 
 
 app = Flask(__name__)
@@ -20,7 +20,7 @@ convention = {
 
 metadata = MetaData(naming_convention=convention)
 db = SQLAlchemy(app, metadata=metadata)
-
+migrate = Migrate(app, db)
 from models import Horse, Jockey, Stat_race, Upcoming_races, Race_horse, Race_jockey
 from auth import bp as auth_bp, init_login_manager, check_rights
 
