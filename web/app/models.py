@@ -28,21 +28,21 @@ class User(db.Model, UserMixin):
 class Horse(db.Model):
     __tablename__ = 'horses'
     
-    id = db.Column(db.Integer, primary_key=True)    
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)    
     name = db.Column(db.String(50), nullable=False)
     count_win = db.Column(db.Integer, nullable=False)
 
 class Jockey(db.Model):
     __tablename__ = 'jockeys'
     
-    id = db.Column(db.Integer, primary_key=True)    
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)    
     full_name = db.Column(db.String(50), nullable=False)
     number_of_races = db.Column(db.String(20), nullable=True)
     
 class Stat_race(db.Model):
     __tablename__ = 'stat_race'
     
-    id = db.Column(db.Integer, primary_key=True)    
+    id = db.Column(db.Integer, primary_key=True,  autoincrement=True)    
     date = db.Column(db.DateTime, nullable=False, server_default=sa.sql.func.now())
     f_place = db.Column(db.String(20), nullable=True)
     s_place= db.Column(db.String(20), nullable=True)
@@ -51,19 +51,19 @@ class Stat_race(db.Model):
 class Upcoming_races(db.Model):
     __tablename__ = 'upcoming_races'
     
-    id = db.Column(db.Integer, primary_key=True)    
+    id = db.Column(db.Integer, primary_key=True,  autoincrement=True)    
     date = db.Column(db.String(50), nullable=False, server_default=sa.sql.func.now())
 
 class Race_horse(db.Model):
     __tablename__ = 'race_horse'
     
-    id_race = db.Column(db.Integer, primary_key=True)    
+    id_race = db.Column(db.Integer, primary_key=True,  autoincrement=True)    
     name_horse = db.Column(db.String(50), nullable=False, primary_key=True)
 
 class Race_jockey(db.Model):
     __tablename__ = 'race_jockey'
     
-    id_race = db.Column(db.Integer, primary_key=True)    
+    id_race = db.Column(db.Integer, primary_key=True,  autoincrement=True)    
     name_jockey = db.Column(db.String(50), nullable=False, primary_key=True)
 
 
