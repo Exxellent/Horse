@@ -29,7 +29,6 @@ class Horse(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)    
     name = db.Column(db.String(50), nullable=False)
     count_win = db.Column(db.Integer, nullable=False)
-    hz=db.Column(db.Integer, nullable=True)
 
 class Jockey(db.Model):
     __tablename__ = 'jockeys'
