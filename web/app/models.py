@@ -29,7 +29,6 @@ class Horse(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)    
     name = db.Column(db.String(50), nullable=False)
     count_win = db.Column(db.Integer, nullable=False)
-    hz = db.Column(db.Integer, nullable=True)
 
 class Jockey(db.Model):
     __tablename__ = 'jockeys'
@@ -37,6 +36,7 @@ class Jockey(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)    
     full_name = db.Column(db.String(50), nullable=False)
     number_of_races = db.Column(db.String(20), nullable=True)
+    q = db.Column(db.Integer, nullable=True)
     
 class Stat_race(db.Model):
     __tablename__ = 'stat_race'
@@ -46,6 +46,7 @@ class Stat_race(db.Model):
     f_place = db.Column(db.String(20), nullable=True)
     s_place= db.Column(db.String(20), nullable=True)
     t_place = db.Column(db.String(20), nullable=True)
+
 
 class Upcoming_races(db.Model):
     __tablename__ = 'upcoming_races'
