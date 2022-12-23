@@ -30,3 +30,5 @@ def downgrade():
         batch_op.add_column(sa.Column('tq_place', sa.VARCHAR(length=20), autoincrement=False, nullable=True))
 
     # ### end Alembic commands ###
+
+    
