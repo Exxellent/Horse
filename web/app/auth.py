@@ -8,8 +8,6 @@ from models import User
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 
-
-
 def init_login_manager(app):
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
