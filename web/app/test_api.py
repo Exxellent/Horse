@@ -11,13 +11,13 @@ def test_login():
     assert response.status_code == 200
 
 def test_valid_auth():
-    data={"login": "renat",
-          "password" : "renat"}
+    data={"login": "silwar",
+          "password" : "admin"}
     response = client.post('/auth/login', data=data)
     assert response.status_code == 302
 
 def test_invalid_auth():
-    data={"login": "renat",
+    data={"login": "silwar",
           "password" : "user"}
     response = client.post('/auth/login', data=data)
     assert response.status_code == 200
