@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% from 'pagination.html' import render_pagination %}
+{% block content %}
+
+<div class="my-5 p-3 rounded bg-dark rounded text-white">
+    <form method="GET">
+        <div class="row">
+            <div class="mb-3 col-4">
+                <label for="name_book">Название книги</label>
+                <input class="form-control" type="text" name="name_book" id="name_book" value="{{ search_params['name_book'] or '' }}">
+            </div>
+            <div class="mb-3 col-4">
+                <label for="author">Автор</label>
+                <input class="form-control" type="text" name="author" id="author" value="{{ search_params['author'] or '' }}">
+            </div>
+            <div class="col-auto mb-3">
+                <label for="years">Год написания</label>
+                <select class="form-select"  id="years" name="years" multiple size="3" title="Год выпуска">
+                    {% for year in years%}
+                        <option  {% if year in search_params['years'] %}selected{% endif %} value="{{ year }}">{{ year }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3 col-auto">
+                <label for="genrys">Жанр</label>
+                <select class="form-select" id="genrys" name="genrys" multiple size="3" title="Жанр книги">
+                    {% for genry in genrys %}
+                        <option  {% if genry.id in search_params['genrys'] %}selected{% endif %} value="{{ genry.id }}">{{ genry.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            
+        </div>
+        <div class="row">
+            <div class="mb-3 col-auto ">
+                <label for="amount_from">Количество страниц от</label>
+                <input class="form-control" name="amount_from" type="number" id="amount_from" value="{{  search_params['amount_from'] or '' }}">
+            </div>
+
+            <div class="mb-3 col-auto">
+                <label for="amount_to">Количество страниц до</label>
+                <input class="form-control" name="amount_to" type="number" id="amount_to" value="{{  search_params['amount_to'] or '' }}">
+            </div>
+        </div>
+        <div class="row justify-content-end ">
+            <div class="d-grid gap-2 col-3 mx-auto">
+                <button type="submit" class="btn btn-primary ">Найти</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="row row-cols-1 row-cols-md-2 g-4 mt-2">
+    {% for book in books%}
+    <div class="col ">
+        <div class="card mx-auto mb-3 border-secondary " style="max-width: 540px;">
+            <div class="row g-0 ">
+                <div class="col-md-4">
+                    <img src="{{book.covers.url}}" class="img-fluid rounded-start m-1" alt="" style="max-width: 170px;">
+                    
+                </div>
+                <div class="col-md-8 ">
+                    <div class="card-body ">
+                        <h5 class="card-title">{{book.name_book}}</h5>
+                        <p class="card-text">{{book.formatted_description|safe| truncate(147)}}</p>
+                        <p class="card-text">Жанр(ы): {% for genry in book_genry %}{% if genry.id_book == book.id %}{{ genry.genry.name }}{% endif %}{% endfor %}</p>
+                        <p class="card-text"><small class="text-muted">Дата написания: {{book.year.strftime('%Y')
+                                }}</small></p>
+                        <p class="ms-auto rating">
+                            <span>★</span><span>{{book.score}}</span><span>({{book.recives_count}})</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="card-footer text-muted d-flex justify-content-between">
+                    <a class="btn btn-primary " href="{{ url_for('books.show', book_id=book.id) }}">Просмотр</a>
+                    {% if current_user.is_authenticated %}
+                    <a class="btn btn-secondary mx-2"
+                        href="{{ url_for('books.edit', book_id=book.id) }}">Редактировать</a>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                        data-bs-target="#delete-book-modal{{book.id}}">Удалить</button>
+                    <div class="modal fade" id="delete-book-modal{{book.id}}" tabindex="-1"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-center">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel{{book.id}}">Удаление книги</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <span id="user-name{{book.id}}">Вы точно хотите удалить книгу {{book.name_book}}
+                                        ?</span>
+                                    <form action="{{ url_for('books.delete', book_id=book.id) }}" method="POST">
+                                        <input id="delete-btn{{book.id}}" type="submit" class="d-none">
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Нет</button>
+                                    <label for="delete-btn{{book.id}}" class="btn btn-danger">Да</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {%endif%}
+                </div>
+            </div>
+        </div>
+    </div>
+    {%endfor%}
+</div>
+<div class="mb-5">
+    {{ render_pagination(pagination, request.endpoint, search_params) }}
+</div>
+{% if current_user.is_admin%}
+<div class="add mb-2 mt-5 text-center">
+    <a class="btn btn-primary " href="{{ url_for('books.create') }}">Добавить книгу</a>
+</div>
+{%endif%}    
+
+
+
+{% endblock %}

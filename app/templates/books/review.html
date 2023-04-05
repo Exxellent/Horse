@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2 class="my-3 text-center text-uppercase font-weight-bold">Написать рецензию на книгу <span>"{{ book.name }}"</span></h2>
+</div>
+
+<div class="container">
+    <form class="w-100" method="POST" action="{{ url_for('books.review', book_id=book.id) }}" enctype="multipart/form-data">
+        <div class="form-group mt-2 mb-2">
+            <label class = "mt-2 mb-2">Оценка</label>
+            <select class="form-control" data-live-search="true" name="rating" id="rating">
+                <option value="5">Отлично</option>
+                <option value="4">Хорошо</option>
+                <option value="3">Удовлетворительно</option>
+                <option value="2">Неудовлетворительно</option>
+                <option value="1">Плохо</option>
+                <option value="0">Ужасно</option>
+            </select>
+        </div>
+
+        <input type="text" hidden name="book_id" value="{{ book.id }}">
+        <input type="text" hidden name="user_id" value="{{ current_user.id }}">
+
+        <div class="form-group">
+            <label class = "mt-2 mb-2" for="text-content">Текст рецензии</label>
+            <textarea class="form-control" name="text" id="rewiew-text"></textarea>
+        </div>
+        <div class="form-group text-center mt-5 ">
+            <input class="btn btn-primary" type="submit" value="Сохранить">
+        </div>
+
+    </form>
+</div>
+{% endblock %}

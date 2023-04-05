@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="row my-3 border rounded">
+        <form method="post" action="{{ url_for('books.create_recive', book_id=id_book) }}">
+            <div class="row border-bottom py-2 bg-light">
+                <label for="text" class="form-label d-block">Ваша рецензия</label>
+            </div>
+            <div class="my-3">
+                <textarea class="form-control" id="text" name="text" rows="3"></textarea>
+            </div>
+            <div class="col-md-3">
+                <label for="rating" class="form-label d-block">Ваша
+                    оценка</label>
+                <select class="form-select my-3" aria-label="Оценка курса" id="rating" name="rating" required>
+                    <option selected value="5">Отлично</option>
+                    <option value="4">Хорошо</option>
+                    <option value="3">Удовлетворительно</option>
+                    <option value="2">Неудовлетворительно</option>
+                    <option value="1">Плохо</option>
+                    <option value="0">Ужасно</option>
+                </select>
+            </div>
+            <div class="col-md">
+                <button type="submit" class="btn btn-dark mb-3" value="Отправить">Отправить</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

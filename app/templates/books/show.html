@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% from 'feedback.html' import render_feedback_form, render_my_feedback, render_rows_feedback %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4 block-img-show mb-2">
+            <img src="{{ image }}" alt="{{ book.name }}">
+        </div>
+        <div class="col-md-8">
+            <h1 class="title mb-3 font-weight-bold">{{ book.name }}</h1>
+            <p class="description ms-0 mb-2">
+                <b>Автор:</b> {{ book.author }}
+            </p>
+            <p class="mb-2 mx-auto">
+                <b>Жанры:</b> {{ genres }}
+            </p>
+            <p class="mb-4 mx-auto">
+            <h4><span>{{ "%.2f" | format(book.rating) }} ★ | {{ book.rating_num }} {% if book.rating_num == 1 %}отзыв{%
+                    elif book.rating_num in [2, 3, 4] %}отзыва{% else %}отзывов{% endif %}</span></h4>
+            </p>
+            
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <!-- <div class="heading-line mx-auto my-5"></div> -->
+    <hr/>
+    <section class="about mb-5">
+        <h3 class="mb-3 font-weight-bold">О книге</h3>
+        <p>{{ book.short_desc | safe }}</p>
+        <h3 class="mb-3 font-weight-bold">Подробная информация</h3>
+        <p class="list-group-item mb-1"><b>Год:</b> {{ book.year }}</p>
+        <p class="list-group-item mb-1"><b>Объем:</b> {{ book.vol_pages }} страниц</p>
+        <p class="list-group-item mb-1"><b>Издатель:</b> {{ book.publisher }}</p>
+
+    </section>
+
+    {% if current_user.is_authenticated %}
+        {% if user_review %}
+        <div class="mb-5">
+            {{ render_my_feedback(user_review, current_user) }}
+        </div>
+        {% elif current_user.is_user %}
+        <div class="mb-5">
+            {{ render_feedback_form(book, current_user) }}
+        </div>
+        {% endif %}
+    {% endif %}
+
+    <!-- ОТЗЫВЫ -->
+
+    <h2 class="mb-3 text-center text-uppercase font-weight-bold">Отзывы</h2>
+    <div class="container d-flex w-50 justify-content-center flex-column">
+        {{ render_rows_feedback(review) }}
+    </div>
+    <div class="text-center">
+        <a href="{{ url_for('books.reviews', book_id=book.id) }}" class="mb-5 text-center btn btn-dark">Все отзывы по
+            данной книге</a>
+    </div>
+</div>
+{% endblock %}

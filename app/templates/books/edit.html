@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% from 'books/book_form.html' import render_book_form %}
+
+{% block content %}
+    <div class="container">
+        <h2 class="my-3 text-center text-uppercase font-weight-bold">Редактирование книги</h2>
+        {{ render_book_form(url_for('books.update', book_id=book.id), genres, form, genres_select, book) }}
+        
+    </div>
+{% endblock %}

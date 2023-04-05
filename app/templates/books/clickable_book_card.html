@@ -1,0 +1,21 @@
+{% macro clickable_book_card(book, imgs, genres, loop) %}
+<a href="{{ url_for('books.show', book_id=book.id) }}" style="text-decoration:none">
+    <div class="block mx-auto">
+        <img src="{{ imgs[loop.index0] }}" class="card-img-top mt-3" alt="...">
+        <div class="block-text">
+            <div class="card-body">
+                <h5 class="card-title">{{ book.name | truncate(30) }}</h5>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><b>Автор:</b> {{ book.author | truncate(40) }}</li>
+                <li class="list-group-item"><b>Жанры:</b> {{ genres[loop.index0] | truncate(40) }}</li>
+                <li class="list-group-item"><b>Год издания:</b> {{ book.year }}</li>
+                <li class="list-group-item">
+                    <h4><span>{{ "%.2f" | format(book.rating) }} ★ | {{ book.rating_num }} {% if book.rating_num == 1 %}отзыв{%
+                        elif book.rating_num in [2, 3, 4] %}отзыва{% else %}отзывов{% endif %}</span></h4>
+                </li>
+            </ul>
+        </div>
+    </div>
+</a>
+{% endmacro %}

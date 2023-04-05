@@ -1,0 +1,67 @@
+{% macro render_book_form(url, genrys, genrys_count, book=None, year=None) %}
+<form action="{{ url }}" method="POST" class="form-control" enctype="multipart/form-data">
+    <div class="row mb-3">
+        <label for="book_title" class="col-sm-2 col-form-label">Название</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" name="book_name" id="book_name" value="{{ book.name_book or '' }}"
+                autocomplete="off">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="book_short_description" class="col-sm-2 col-form-label">Краткое описание</label>
+        <div class="col-sm-10 " >
+            <textarea class="form-control" name="book_short_description" id="book_short_description">{{ book.short_description or '' }}</textarea>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="book_author" class="col-sm-2 col-form-label">Автор</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" name="book_author" id="book_author" value="{{ book.author or '' }}"
+                autocomplete="off">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="publishing_house" class="col-sm-2 col-form-label">Издатель</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" name="book_publishing_house" id="book_publishing_house"
+                value="{{ book.publishing_house or '' }}" autocomplete="off">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="book_year" class="col-sm-2 col-form-label">Год издания</label>
+        <div class="col-sm-10">
+            <input type="date" class="date-own form-control" name="book_year" id="book_year"
+                value="{{ year or '' }}">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="book_volume" class="col-sm-2 col-form-label">Объём в страницах</label>
+        <div class="col-sm-10">
+            <input type="number" class="form-control" name="book_volume" id="book_volume"
+                value="{{ book.volume or '' }}" autocomplete="off">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="book_genrys" class="col-sm-2 col-form-label">Жанры</label>
+        <div class="col-sm-10">
+            <select class="form-select" size="{{ genrys_count }}" name="book_genrys" id="book_genrys" multiple>
+                {% for genry in genrys %}
+                <option value="{{ genry.id }}" {% if genry in book.genrys %} selected {% endif %}> {{ genry.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    {% if request.endpoint == 'books.create' %}
+    <div class="mb-3">
+        <label for="book_img" class="form-label">Обложка книги</label>
+        <input class="form-control" type="file" id="book_img" name="book_img" accept=".jpg,.png">
+    </div>
+    {% endif %}
+
+    <div class="mb-3 text-center">
+        <input type="submit" class="btn btn-dark" value="Сохранить">
+    </div>
+</form>
+
+{% endmacro %}

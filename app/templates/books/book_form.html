@@ -1,0 +1,64 @@
+{% macro render_book_form(url, genres, form, genres_select=[], book={}) %}
+    <form method="POST" action="{{ url }}" enctype="multipart/form-data">
+        <div class="mb-3 row">
+            <div class="col-md-6 d-flex flex-column">
+                <div class="mb-3">
+                    <label for="name">Название</label>
+                    <input class="form-control" type="text" name="name" placeholder="Введите название книги" id="name" value="{% if form == {} %}{{ book.name }}{% else %}{{ form['name'] }}{% endif %}">
+                </div>
+                <div class="mb-3">
+                    <label for="genre">Жанры</label>
+                    <select class="form-select" name="genre" id="genre" size="8" multiple>
+                        {% for genre in genres %}
+                            <option value="{{ genre.id }}" {% if genre.id in genres_select %}selected{% endif %}>{{ genre.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="author">Автор</label>
+                    <input type="text" class="form-control" placeholder="Введите ФИО автора" name="author" id="author" value="{% if form == {} %}{{ book.author }}{% else %}{{ form['author'] }}{% endif %}">
+                </div>
+                <div class="mb-3">
+                    <label for="vol_pages">Количество страниц</label>
+                    <input type="text" class="form-control" placeholder="Введите количество страниц" name="vol_pages" id="vol_pages" value="{% if form == {} %}{{ book.vol_pages }}{% else %}{{ form['vol_pages'] }}{% endif %}">
+                </div>
+            </div>
+            <div class="col-md-6 d-flex flex-column">
+                <div class="mb-3">
+                    <label for="publisher">Издательство</label>
+                    <input type="text" class="form-control" placeholder="Введите издательство" name="publisher" id="publisher" value="{% if form == {} %}{{ book.publisher }}{% else %}{{ form['publisher'] }}{% endif %}">
+                </div>
+                <div class="mb-3">
+                    <label for="year">Год выпуска</label>
+                    <input type="text" class="form-control" placeholder="Введите год в формате YYYY" name="year" id="year" value="{% if form == {} %}{{ book.year }}{% else %}{{ form['year'] }}{% endif %}">
+                </div>
+                <div class="mb-3 d-flex flex-column flex-grow-1">
+                    <label for="text-content">Краткое описание</label>
+                    <textarea class="form-control flex-grow-1" name="short_desc" id="text-content" cols="30" rows="5">{% if form == {} %}{{ book.short_desc | safe }}{% else %}{{ form['short_desc'] }}{% endif %}</textarea>
+                </div>
+            </div>
+        </div>
+        {% if request.endpoint in ['books.new', 'books.create'] %}
+            <div class="mb-3 row">
+                <div class="col-md-12 d-flex flex-column">
+                    <div class="mb-3">
+                        <label for="background_img">Фоновое изображение</label>
+                        <input class="form-control" type="file" name="background_img" id="background_img">
+                    </div>
+                    <div class="mb-3 background-preview p-3 rounded d-flex align-items-center justify-content-center">
+                        <img src="#" class="img-fluid d-none" alt="">
+                        <label for="background_img" class="btn btn-dark">Выбрать изображение</label>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="mb-3 text-center">
+            <input type="submit" class="btn btn-dark" value="Сохранить">
+        </div>
+    </form>
+    <!-- Скрипт подключения редактора Markdown -->
+    <!-- <script>
+        const easyMDE = new EasyMDE({element: document.getElementById('short_description')}); 
+    </script> -->
+{% endmacro %}

@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% from 'pagination.html' import render_pagination %}
+{% from 'books/clickable_book_card.html' import clickable_book_card %}
+
+{% block content %}
+<div class="container">
+    <div class="my-5">
+
+        <div class="row">
+            {% for book in books %}
+            <div class="card col-md-2 me-3 mb-3" style="width: 18rem;">
+                {{ clickable_book_card(book, imgs, genres, loop) }}
+                <div class="btn-group align-items-center container-fluid my-2" role="group" style="width:99%;">
+                    {% if current_user.is_authenticated %}
+                        {% if current_user.can('update') %}
+                            <a class="btn btn-outline-dark" href="{{ url_for('books.edit', book_id=book.id) }}"><i class="bi bi-pencil-square"></i></a>
+                        {% endif %}
+                        {% if current_user.can('delete') %}
+                            <button type="button" class="btn btn-outline-dark" data-url="{{ url_for('books.delete', book_id=book.id) }}"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modal-del-book"><i class="bi bi-trash3"></i></button>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                
+            </div>
+            {% endfor %}
+            <!-- Modal for delete -->
+            <div class="modal" tabindex="-1" id="modal-del-book" aria-labelledby="modal-delete" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="modal-delete">Удаление книги</h5>
+                    </div>
+                    <div class="modal-body">
+                      <p>Вы действительно хотите удалить книгу?</p>
+                      <form action="" method="POST" enctype="multipart/form-data">
+                        <input type="submit" id="delete-id-book" class="d-none">
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                      <label type="button" class="btn btn-danger" for="delete-id-book">Удалить</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <!-- ---------------- -->
+        </div>
+        
+        <div class="mb-5">
+            {{ render_pagination(pagination, request.endpoint) }}
+        </div>
+
+        {% if current_user.is_authenticated and current_user.is_admin %}
+        <div class="text-center my-3">
+            <a class="btn btn-lg btn-dark" href="{{ url_for('books.new') }}">Добавить книгу</a>
+        </div>
+        {% endif %}
+
+    </div>
+    {% endblock %}

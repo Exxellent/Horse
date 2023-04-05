@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% from 'book/form.html' import render_book_form %}
+
+{% block content %}
+
+<h1>Редактирование книги</h1>
+
+{{ render_book_form(url_for('books.edit', book_id=book.id), genrys, genrys_count, book=book, year=year) }}
+
+{% endblock %}

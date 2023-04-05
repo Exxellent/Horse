@@ -1,0 +1,62 @@
+{% macro render_feedback_form(book, current_user) %}
+    <div class="container mt-5">
+        <form method="POST" action="{{ url_for('books.send_comment', book_id=book.id) }}" enctype="multipart/form-data">
+           <h2 class="mb-3 text-center text-uppercase font-weight-bold">Оставьте свой отзыв</h2>
+           <input type="hidden" name="user_id" value="{{ current_user.id }}">
+           <input type="hidden" name="book_id" value="{{ book.id }}"> 
+           <div class="d-flex container flex-column align-items-center">
+                <select name="rating" id="rating" class="form-select mb-3" style="max-width: 35%;">
+                    <option value="5" selected>Отлично</option>
+                    <option value="4">Хорошо</option>
+                    <option value="3">Удовлетворительно</option>
+                    <option value="2">Неудовлетворительно</option>
+                    <option value="1">Плохо</option>
+                    <option value="0">Ужасно</option>
+                </select>
+        
+                <textarea name="text" id="text-content" class="form-control w-50"></textarea>
+
+                <button type="submit" class="btn btn-dark w-25 mt-3">Отправить отзыв</button>
+            </div> 
+        </form>
+    </div>
+{% endmacro %}
+
+{% macro render_my_feedback(review, current_user) %}
+    <h2 class="mb-3 text-center text-uppercase font-weight-bold">Ваш отзыв</h2>
+    <div class="container d-flex w-50 justify-content-center flex-column">
+        <div class="mt-5"></div>
+        <div class="d-flex mt-4">
+            <div class="flex-shrink-0">
+                <img src="{{ url_for('static', filename='images/default-profile-picture-300x300.jpeg') }}" class="rounded-circle comment-img" style="max-width: 50px;" alt="img-comment">
+            </div>
+            <div class="flex-grow-1 text-start ms-3">                
+                <h5>{{ current_user.last_name }} {{ current_user.first_name }}</h5>
+                <p class="mb-0">{{ review.text | safe | truncate(100)}}</p>
+                <h6>Оценка: {{ review.rating }}</h6>
+                <h6>{{ review.created_at }}</h6>
+            </div>
+        </div>
+        <div class="mt-5"></div>
+    </div>
+{% endmacro %}
+
+{% macro render_rows_feedback(reviews) %}
+        <div class="mt-5"></div>
+        
+        {% for review in reviews %}
+            <div class="d-flex mt-4">
+                <div class="flex-shrink-0">
+                    <img src="{{ url_for('static', filename='images/default-profile-picture-300x300.jpeg') }}" class="rounded-circle comment-img" style="max-width: 50px;" alt="img-comment">
+                </div>
+                <div class="flex-grow-1 text-start ms-3">
+                    <h5>{{ review.user.last_name }} {{ review.user.first_name }}</h5>
+                    <p class="mb-0">{{ review.text | safe | truncate(100)}}</p>
+                    <h6>Оценка: {{ review.rating }}</h6>
+                    <h6>{{ review.created_at }}</h6>
+                </div>
+            </div>
+        {% endfor %}
+
+    <div class="mb-5"></div>
+{% endmacro %}

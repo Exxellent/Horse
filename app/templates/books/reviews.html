@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% from 'feedback.html' import render_rows_feedback %}
+{% from 'pagination.html' import render_pagination %}
+
+{% block content %}
+<h2 class="mt-3 text-center text-uppercase font-weight-bold">Отзывы на книгу "{{ books.name }}"</h2>
+<div class="container d-flex w-75 justify-content-center flex-column">
+    
+    {{ render_rows_feedback(reviews) }}
+
+    <div class="mb-5">
+        {{ render_pagination(pagination, request.endpoint, search_params) }}
+    </div>
+</div>
+
+{% endblock %}
